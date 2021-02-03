@@ -17,13 +17,13 @@ namespace DataPackMC
             this.path = filePath;
             this.file = new StreamWriter(new FileStream(filePath, FileMode.Create));
         }
-        public void GiveItems(TargetSelector selector, string itemId, int count=1)
+        public void GiveItems(TargetSelector selector, Item item, int count=1)
         {
-            OutputLine($"give {selector} {itemId} {count}");
+            RunCommand($"give {selector} {item} {count}");
         }
-        void OutputLine(string line)
+        public void RunCommand(string command)
         {
-            file.WriteLine(line);
+            file.WriteLine(command);
         }
         public void EndFunction()
         {
