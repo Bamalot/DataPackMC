@@ -19,7 +19,7 @@ namespace DataPackMC
             this.path = destFolder + $"\\{name}";
             this.dataPath = path + "\\data";
             Directory.CreateDirectory(path);
-            File.WriteAllText(path + "\\pack.mcmeta", $"{{'pack': {{'pack_format': 6, 'description': {description}'}} }}");
+            File.WriteAllText(path + "\\pack.mcmeta", $"{{'pack': {{'pack_format': 6, 'description': '{description}'}} }}".Replace("'", "\""));
         }
 
         public DataNamespace AddNamespace(string name)

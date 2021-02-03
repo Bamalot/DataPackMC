@@ -17,6 +17,10 @@ namespace DataPackMC
             this.path = filePath;
             this.file = new StreamWriter(new FileStream(filePath, FileMode.Create));
         }
+        public void GiveItems(TargetSelector selector, string itemId, int count=1)
+        {
+            OutputLine($"give {selector} {itemId} {count}");
+        }
         void OutputLine(string line)
         {
             file.WriteLine(line);
