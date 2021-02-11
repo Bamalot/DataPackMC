@@ -17,6 +17,13 @@ namespace DataPackMC
         Random,
         Arbitrary
     }
+    public enum GameMode
+    {
+        Survival,
+        Creative,
+        Adventure,
+        Spectator
+    }
     public class TargetSelector
     {
         SelectorType type;
@@ -49,49 +56,38 @@ namespace DataPackMC
         }
         public void SetLimit(int limit, SelectorSortType sort)
         {
-            string sortString = "";
-            switch(sort)
-            {
-                case SelectorSortType.Nearest:
-                    sortString = "nearest";
-                    break;
-                case SelectorSortType.Furthest:
-                    sortString = "furthest";
-                    break;
-                case SelectorSortType.Random:
-                    sortString = "random";
-                    break;
-                case SelectorSortType.Arbitrary:
-                    sortString = "arbitrary";
-                    break;
-            }
+            string sortString = Util.GetSelectorSortString(sort);
             requirements.Add($"limit={limit},sort={sortString}");
         }
         public void AddTag(string tag)
         {
             requirements.Add($"tag={tag}");
         }
+        public void SetLevel(int level)
+        {
+            requirements.Add($"level={level}");
+        }
+        public void SetLevelRange(int min, int max=-1)
+        {
+            if(max == -1)
+            {
+                requirements.Add($"level={min}..");
+                return;
+            }
+            requirements.Add($"level={min}..{max}");
+        }
+        public void SetGameMode(GameMode gamemode, bool not=false)
+        {
+            if(not)
+            {
+                requirements.Add($"gamemode=!{Util.GetGameModeString(gamemode)}");
+                return;
+            }
+            requirements.Add($"gamemode={Util.GetGameModeString(gamemode)}");
+        }
         public override string ToString()
         {
-            string str = "";
-            switch(type)
-            {
-                case SelectorType.AllPlayers:
-                    str = "@a";
-                    break;
-                case SelectorType.AllEntities:
-                    str = "@e";
-                    break;
-                case SelectorType.NearestPlayer:
-                    str = "@p";
-                    break;
-                case SelectorType.RandomPlayer:
-                    str = "@r";
-                    break;
-                case SelectorType.Executor:
-                    str = "@s";
-                    break;
-            }
+            string str = Util.GetTargetSelectorString(type);
             if(requirements.Count > 0)
             {
                 str += "[";
